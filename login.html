@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sign In — Stackly Pharmacy</title>
+<meta name="description" content="Sign in or create a Stackly account to order medicines, manage prescriptions, and track deliveries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0F766E; --teal-bright:#14B8A6; --blue:#2563EB; --blue-light:#DBEAFE;
+  --red:#EF4444; --red-soft:#FEE2E2; --white:#FFFFFF; --bg:#F8FAFC;
+  --ink:#0F172A; --ink-soft:#64748B; --teal-tint:#E6F5F3; --blue-tint:#EFF4FF;
+  --border:#E2E8F0; --shadow-lg:0 24px 60px rgba(15,23,42,.16);
+  --font-display:'Fraunces', serif; --font-body:'Plus Jakarta Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{height:100%;}
+body{margin:0; min-height:100%; font-family:var(--font-body); color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased; display:flex; align-items:center; justify-content:center; padding:2.6rem 1.4rem;}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+h1,h2{font-family:var(--font-display); margin:0; color:var(--ink); font-weight:600;}
+p{margin:0;}
+a:focus-visible, button:focus-visible, input:focus-visible{outline:2.5px solid var(--blue); outline-offset:3px; border-radius:6px;}
+
+.shell{display:grid; grid-template-columns:460px 1fr; width:min(1180px,100%); height:min(820px,92vh); border-radius:24px; overflow:hidden; box-shadow:var(--shadow-lg); background:var(--white);}
+
+/* ── LEFT HERO ── */
+.al-hero{position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:2.6rem 2.4rem; overflow:hidden; background:linear-gradient(165deg, var(--teal) 0%, #0c4f49 100%);}
+.al-hero-bg{position:absolute; inset:0; z-index:0; background:linear-gradient(180deg, rgba(12,79,73,.4) 0%, rgba(12,79,73,.85) 68%, #0c4f49 100%), url('./assets/login.webp') center/cover no-repeat; animation:alZoom 22s ease-in-out infinite alternate;}
+@keyframes alZoom{from{transform:scale(1)} to{transform:scale(1.08)}}
+.al-grid{position:absolute; inset:0; z-index:1; background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px); background-size:50px 50px; mask-image:radial-gradient(ellipse at 30% 30%, #000 0%, transparent 75%);}
+.al-top,.al-mid,.al-foot{position:relative; z-index:2;}
+.al-logo{display:flex; align-items:center; gap:2px;}
+.al-logo img{height:32px; width:32px; object-fit:contain; border-radius:8px; flex-shrink:0;}
+.al-logo-word{font-family:var(--font-display); font-weight:700; font-size:1.4rem; color:#fff;}
+.al-eyebrow{display:inline-flex; align-items:center; gap:.6rem; font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:1.1rem;}
+.al-eyebrow::before{content:''; width:26px; height:1px; background:var(--teal-bright); display:inline-block;}
+.al-h1{font-family:var(--font-display); font-size:clamp(2rem,3.6vw,2.7rem); line-height:1.1; color:#fff; letter-spacing:-.01em;}
+.al-h1 em{font-style:italic; color:var(--teal-bright);}
+.al-rule{width:44px; height:2px; background:var(--teal-bright); margin:1.3rem 0; opacity:.7;}
+.al-desc{font-size:.86rem; color:rgba(255,255,255,.66); line-height:1.8; max-width:320px; margin-bottom:1.9rem;}
+.al-feats{display:flex; flex-direction:column; gap:.7rem;}
+.al-feat{display:flex; align-items:center; gap:.75rem;}
+.al-feat-ic{width:32px; height:32px; flex-shrink:0; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:9px; display:flex; align-items:center; justify-content:center; color:var(--teal-bright); font-size:.8rem;}
+.al-feat span{font-size:.8rem; color:rgba(255,255,255,.7);}
+.al-back{display:inline-flex; align-items:center; gap:.5rem; font-size:.76rem; color:rgba(255,255,255,.5); margin-bottom:.8rem; transition:color .22s;}
+.al-back:hover{color:var(--teal-bright);}
+.al-copy{font-size:.68rem; color:rgba(255,255,255,.28); letter-spacing:.03em;}
+
+/* ── RIGHT FORM PANEL ── */
+.al-panel{background:var(--white); display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden;}
+.al-inner{width:100%; max-width:440px; margin:0 auto; padding:3rem 2.4rem 2.4rem; flex:1; display:flex; flex-direction:column;}
+
+.al-tabs{display:flex; border-bottom:1.5px solid var(--border); margin-bottom:1.8rem;}
+.al-tab{flex:1; padding:0 0 .9rem; background:transparent; border:none; font-size:.76rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); cursor:pointer; position:relative; transition:color .25s;}
+.al-tab::after{content:''; position:absolute; bottom:-1.5px; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--teal),var(--teal-bright)); transform:scaleX(0); transition:transform .28s cubic-bezier(.4,0,.2,1);}
+.al-tab.active{color:var(--ink);}
+.al-tab.active::after{transform:scaleX(1);}
+
+.al-fpanel{display:none; flex-direction:column; flex:1;}
+.al-fpanel.active{display:flex;}
+.al-h2{font-family:var(--font-display); font-size:clamp(1.6rem,3vw,2rem); color:var(--ink); margin-bottom:.3rem;}
+.al-h2 em{font-style:italic; color:var(--teal);}
+.al-sub{font-size:.85rem; color:var(--ink-soft); margin-bottom:1.4rem; line-height:1.6;}
+
+.google-btn{width:100%; padding:.75rem; background:var(--white); border:1.5px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; gap:.6rem; font-size:.85rem; font-weight:600; color:var(--ink); transition:border-color .22s, background .22s;}
+.google-btn:hover{border-color:var(--teal); background:var(--teal-tint);}
+
+.al-divider{display:flex; align-items:center; gap:.7rem; margin:1.1rem 0; font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
+.al-divider::before,.al-divider::after{content:''; flex:1; height:1px; background:var(--border);}
+
+.role-toggle{display:grid; grid-template-columns:1fr 1fr; border:1.5px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:1.3rem;}
+.role-btn{padding:.68rem .5rem; background:var(--white); border:none; font-size:.74rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); display:flex; align-items:center; justify-content:center; gap:.5rem; transition:background .22s,color .22s;}
+.role-btn+.role-btn{border-left:1.5px solid var(--border);}
+.role-btn.active{background:var(--teal); color:#fff;}
+
+.fg{margin-bottom:.95rem;}
+.fl{display:block; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:.4rem;}
+.fi-wrap{position:relative;}
+.fi{width:100%; padding:.72rem 2.4rem .72rem .9rem; background:var(--white); border:1.5px solid var(--border); border-radius:10px; font-size:.88rem; color:var(--ink); font-family:inherit; transition:border-color .22s,box-shadow .22s; outline:none;}
+.fi::placeholder{color:#94A3B8;}
+.fi:focus{border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+.fi.invalid{border-color:var(--red); box-shadow:0 0 0 3px rgba(239,68,68,.1);}
+.fi.valid{border-color:var(--teal-bright);}
+.fi-icon{position:absolute; right:.85rem; top:50%; transform:translateY(-50%); color:#94A3B8; font-size:.85rem; pointer-events:none; display:flex;}
+.fi-btn{position:absolute; right:.7rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#94A3B8; cursor:pointer; padding:.2rem; transition:color .22s; display:flex;}
+.fi-btn:hover{color:var(--teal);}
+.ferr{display:block; font-size:.7rem; color:var(--red); margin-top:.3rem; min-height:14px;}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:.85rem;}
+
+.pwd-bars{display:flex; gap:3px; margin-top:.45rem;}
+.pwd-bar{flex:1; height:2.5px; border-radius:2px; background:var(--border); transition:background .28s;}
+.pwd-bar.s-weak{background:var(--red);}
+.pwd-bar.s-fair{background:#F59E0B;}
+.pwd-bar.s-good{background:var(--teal-bright);}
+.pwd-slabel{font-size:.68rem; color:var(--ink-soft); margin-top:.3rem;}
+
+.row-split{display:flex; align-items:center; justify-content:space-between; margin:-.2rem 0 1.1rem; flex-wrap:wrap; gap:.5rem;}
+.chk-label{display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--ink-soft); cursor:pointer;}
+.chk-label input[type=checkbox]{width:15px; height:15px; accent-color:var(--teal); cursor:pointer;}
+.link-accent{font-size:.8rem; font-weight:600; color:var(--teal);}
+.link-accent:hover{color:var(--teal-bright);}
+
+.terms-row{display:flex; align-items:flex-start; gap:.55rem; margin:-.2rem 0 1.1rem; font-size:.8rem; color:var(--ink-soft);}
+.terms-row input[type=checkbox]{width:15px; height:15px; margin-top:2px; accent-color:var(--teal); cursor:pointer; flex-shrink:0;}
+.terms-row a{color:var(--teal); font-weight:600;}
+.terms-row a:hover{color:var(--teal-bright);}
+
+.sub-btn{width:100%; padding:.85rem; background:var(--teal); border:none; border-radius:10px; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#fff; box-shadow:0 10px 24px rgba(15,118,110,.28); transition:transform .2s,box-shadow .3s,background .2s;}
+.sub-btn:hover{background:#0c5f58; transform:translateY(-2px); box-shadow:0 14px 30px rgba(15,118,110,.36);}
+.sub-btn:disabled{opacity:.6; transform:none; cursor:not-allowed;}
+
+.switch-note{text-align:center; font-size:.82rem; color:var(--ink-soft); margin-top:1.2rem;}
+.switch-note a{color:var(--teal); font-weight:600;}
+.switch-note a:hover{color:var(--teal-bright);}
+
+.mobile-back{display:none; align-items:center; justify-content:center; gap:.5rem; font-size:.82rem; font-weight:600; color:var(--teal); margin-top:1.8rem; padding-top:1.2rem; border-top:1px solid var(--border); width:100%; background:none; border-left:none; border-right:none; border-bottom:none;}
+.mobile-back:hover{color:var(--teal-bright);}
+
+.al-toast{position:fixed; bottom:1.6rem; right:1.6rem; z-index:9999; background:var(--ink); border-left:3px solid var(--teal-bright); border-radius:10px; padding:.9rem 1.1rem; display:flex; align-items:center; gap:.65rem; font-size:.84rem; color:#fff; box-shadow:0 16px 50px rgba(0,0,0,.3); opacity:0; transform:translateY(10px); transition:opacity .28s,transform .28s; max-width:300px;}
+.al-toast.show{opacity:1; transform:translateY(0);}
+.al-toast i{color:var(--teal-bright); font-style:normal;}
+
+@media(max-width:960px){
+  html,body{height:auto;}
+  body{align-items:flex-start; padding:0; background:var(--white);}
+  .shell{grid-template-columns:1fr; height:auto; min-height:100vh; border-radius:0; box-shadow:none;}
+  .al-panel{overflow-y:visible;}
+  .al-hero{display:none;}
+  .al-inner{padding:2.6rem 1.8rem 2.2rem; max-width:480px;}
+  .mobile-back{display:flex;}
+}
+@media(max-width:520px){
+  .al-inner{padding:2rem 1.2rem 1.8rem;}
+  .two-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  try{
+    var KEY='stacklyNav', RKEY='stacklyNavRestore';
+    var restore = sessionStorage.getItem(RKEY);
+    if(restore){
+      sessionStorage.removeItem(RKEY);
+      try{
+        var rdata = JSON.parse(restore);
+        if(rdata && rdata.href === window.location.href){
+          var cancelled = false;
+          var cancel = function(){ cancelled = true; };
+          ['wheel','touchstart','keydown'].forEach(function(evt){
+            window.addEventListener(evt, cancel, {once:true, passive:true});
+          });
+          var doRestore = function(){
+            var prevBehavior = document.documentElement.style.scrollBehavior;
+            document.documentElement.style.scrollBehavior = 'auto';
+            window.scrollTo(0, rdata.y || 0);
+            document.documentElement.style.scrollBehavior = prevBehavior || '';
+          };
+          var attempts = 0;
+          var tryRestore = function(){
+            if(cancelled) return;
+            doRestore();
+            attempts++;
+            if(attempts < 6){ setTimeout(tryRestore, 250); }
+          };
+          if(document.readyState === 'complete'){ setTimeout(tryRestore, 50); }
+          else{ window.addEventListener('load', function(){ setTimeout(tryRestore, 50); }); }
+        }
+      }catch(e){}
+    }
+    function save(){
+      try{ sessionStorage.setItem(KEY, JSON.stringify({href:window.location.href, y:window.scrollY})); }catch(e){}
+    }
+    save();
+    var ticking=false;
+    window.addEventListener('scroll', function(){
+      if(!ticking){ ticking=true; requestAnimationFrame(function(){ save(); ticking=false; }); }
+    }, {passive:true});
+    window.addEventListener('beforeunload', save);
+  }catch(e){}
+})();
+</script>
+
+<div class="shell">
+
+  <!-- ══ LEFT HERO ══ -->
+  <div class="al-hero">
+    <div class="al-hero-bg"></div>
+    <div class="al-grid"></div>
+
+    <div class="al-top">
+      <a href="index.html" class="al-logo">
+        <img src="./stackly-logo.webp" alt="Stackly" onerror="this.style.display='none'">
+        <span class="al-logo-word">Stackly</span>
+      </a>
+    </div>
+
+    <div class="al-mid">
+      <div class="al-eyebrow">Patient Portal</div>
+      <div class="al-h1">YOUR HEALTH,<br><em>ONE ACCOUNT AWAY.</em></div>
+      <div class="al-rule"></div>
+      <p class="al-desc">Sign in to order medicines, track deliveries, and manage prescriptions — or set up a pharmacy partner account to serve customers on Stackly.</p>
+      <div class="al-feats">
+        <div class="al-feat"><div class="al-feat-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 016 0v2"/></svg></div><span>Order &amp; track medicine deliveries</span></div>
+        <div class="al-feat"><div class="al-feat-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div><span>Prescription upload &amp; pharmacist review</span></div>
+        <div class="al-feat"><div class="al-feat-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg></div><span>Saved addresses &amp; reorder in one tap</span></div>
+        <div class="al-feat"><div class="al-feat-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div><span>Real-time order &amp; inventory dashboards</span></div>
+      </div>
+    </div>
+
+    <div class="al-foot">
+      <a href="index.html" class="al-back">← Back to Website</a>
+      <div class="al-copy">© 2026 STACKLY. ALL RIGHTS RESERVED.</div>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <div class="al-panel">
+    <div class="al-inner">
+
+      <div class="al-tabs">
+        <button class="al-tab active" onclick="switchTab('signin')">Sign In</button>
+        <button class="al-tab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- ═ SIGN IN ═ -->
+      <div class="al-fpanel active" id="fp-signin">
+        <div class="al-h2">Welcome <em>back.</em></div>
+        <p class="al-sub">Enter your credentials to access your account.</p>
+
+        <a href="#" class="google-btn" onclick="pmsNav(event)">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.3 0 24 0 14.7 0 6.8 5.4 2.7 13.3l7.9 6.1C12.5 13.1 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.7 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.6 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l8.1-6.2z"/><path fill="#34A853" d="M24 48c6.3 0 11.6-2.1 15.5-5.6l-7.5-5.8c-2.1 1.4-4.8 2.3-8 2.3-6.2 0-11.5-3.6-13.4-8.9l-8.1 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+          Continue with Google
+        </a>
+
+        <div class="al-divider">or sign in with email</div>
+
+        <div class="role-toggle">
+          <button class="role-btn active" id="rb-customer" onclick="setRole('customer')">Customer</button>
+          <button class="role-btn" id="rb-partner" onclick="setRole('partner')">Pharmacy Partner</button>
+        </div>
+
+        <form id="signinForm" novalidate>
+          <div class="fg">
+            <label class="fl">Email Address</label>
+            <div class="fi-wrap">
+              <input type="email" id="si-email" class="fi" placeholder="you@email.com" onblur="fv(this,'email')">
+              <span class="fi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l9 7 9-7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></span>
+            </div>
+            <span class="ferr" id="e-si-email"></span>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Password</label>
+            <div class="fi-wrap">
+              <input type="password" id="si-pwd" class="fi" placeholder="Enter your password" onblur="fv(this,'pwd')">
+              <button type="button" class="fi-btn" onclick="togglePwd('si-pwd',this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
+            <span class="ferr" id="e-si-pwd"></span>
+          </div>
+
+          <div class="row-split">
+            <label class="chk-label"><input type="checkbox" id="rememberMe"> Remember me</label>
+            <a href="./404.html" class="link-accent">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="sub-btn">Sign In</button>
+        </form>
+
+        <div class="switch-note">Don't have an account? <a href="#" onclick="switchTab('signup');return false;">Sign up</a></div>
+      </div>
+
+      <!-- ═ SIGN UP ═ -->
+      <div class="al-fpanel" id="fp-signup">
+        <div class="al-h2">Create your <em>account.</em></div>
+        <p class="al-sub">Join Stackly to order medicines and manage your health.</p>
+
+        <a href="#" class="google-btn" onclick="pmsNav(event)">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.3 30.3 0 24 0 14.7 0 6.8 5.4 2.7 13.3l7.9 6.1C12.5 13.1 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.7 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.6 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l8.1-6.2z"/><path fill="#34A853" d="M24 48c6.3 0 11.6-2.1 15.5-5.6l-7.5-5.8c-2.1 1.4-4.8 2.3-8 2.3-6.2 0-11.5-3.6-13.4-8.9l-8.1 6.2C6.7 42.6 14.7 48 24 48z"/></svg>
+          Continue with Google
+        </a>
+
+        <div class="al-divider">or sign up with email</div>
+
+        <form id="signupForm" novalidate>
+          <div class="two-col">
+            <div class="fg">
+              <label class="fl">First Name</label>
+              <input type="text" id="su-first" class="fi" placeholder="First name"
+                oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" onblur="fv(this,'name')">
+              <span class="ferr" id="e-su-first"></span>
+            </div>
+            <div class="fg">
+              <label class="fl">Last Name</label>
+              <input type="text" id="su-last" class="fi" placeholder="Last name"
+                oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" onblur="fv(this,'name')">
+              <span class="ferr" id="e-su-last"></span>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Email Address</label>
+            <div class="fi-wrap">
+              <input type="email" id="su-email" class="fi" placeholder="your@email.com" onblur="fv(this,'email')">
+              <span class="fi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l9 7 9-7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></span>
+            </div>
+            <span class="ferr" id="e-su-email"></span>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Phone Number</label>
+            <div class="fi-wrap">
+              <input type="tel" id="su-phone" class="fi" placeholder="+91 98400 00000" maxlength="13"
+                oninput="this.value=this.value.replace(/[^0-9+\s]/g,'')" onblur="fv(this,'phone')">
+              <span class="fi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+            </div>
+            <span class="ferr" id="e-su-phone"></span>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Password</label>
+            <div class="fi-wrap">
+              <input type="password" id="su-pwd" class="fi" placeholder="Create a strong password"
+                oninput="pwdStrength(this.value)" onblur="fv(this,'pwd')">
+              <button type="button" class="fi-btn" onclick="togglePwd('su-pwd',this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
+            <div class="pwd-bars">
+              <div class="pwd-bar" id="pb1"></div><div class="pwd-bar" id="pb2"></div>
+              <div class="pwd-bar" id="pb3"></div><div class="pwd-bar" id="pb4"></div>
+            </div>
+            <div class="pwd-slabel" id="pslabel"></div>
+            <span class="ferr" id="e-su-pwd"></span>
+          </div>
+
+          <div class="fg">
+            <label class="fl">Confirm Password</label>
+            <div class="fi-wrap">
+              <input type="password" id="su-cpwd" class="fi" placeholder="Re-enter your password" onblur="fv(this,'cpwd')">
+              <span class="fi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>
+            </div>
+            <span class="ferr" id="e-su-cpwd"></span>
+          </div>
+
+          <div class="terms-row">
+            <input type="checkbox" id="termsChk">
+            <label for="termsChk">I agree to the
+              <a href="./404.html" >Terms of Service</a> and
+              <a href="./404.html" >Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="sub-btn">Create Account</button>
+        </form>
+
+        <div class="switch-note">Already have an account? <a href="#" onclick="switchTab('signin');return false;">Sign in</a></div>
+      </div>
+
+      <!-- BACK TO WEBSITE — bottom, mobile/tablet only -->
+      <a href="index.html" class="mobile-back">← Back to Website</a>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="al-toast" id="toast"><i>✓</i><span id="toastMsg"></span></div>
+
+<script>
+'use strict';
+var currentRole='customer';
+
+function pmsNav(e){
+  if(e && e.preventDefault) e.preventDefault();
+  toast('This feature is coming soon.');
+}
+
+function nameFromEmail(e){
+  var l=(e.split('@')[0]||'Customer').replace(/[._\-+]+/g,' ').trim();
+  return l.split(' ').filter(Boolean).map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase();}).join(' ')||'Customer';
+}
+function initials(n){return n.split(' ').map(function(x){return x[0];}).join('').toUpperCase().slice(0,2);}
+function store(name,email,role){
+  try{
+    localStorage.setItem('sl_user',name);
+    localStorage.setItem('sl_email',email);
+    localStorage.setItem('sl_role',role);
+    localStorage.setItem('sl_initials',initials(name));
+  }catch(err){}
+}
+function toast(msg){
+  var t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+
+function switchTab(t){
+  document.querySelectorAll('.al-tab').forEach(function(b,i){b.classList.toggle('active',i===(t==='signin'?0:1));});
+  document.getElementById('fp-signin').classList.toggle('active',t==='signin');
+  document.getElementById('fp-signup').classList.toggle('active',t==='signup');
+}
+
+function setRole(r){
+  currentRole=r;
+  document.getElementById('rb-customer').classList.toggle('active',r==='customer');
+  document.getElementById('rb-partner').classList.toggle('active',r==='partner');
+}
+
+function togglePwd(id,btn){
+  var i=document.getElementById(id),s=i.type==='password';
+  i.type=s?'text':'password';
+  btn.style.color=s?'#0F766E':'';
+}
+
+function pwdStrength(v){
+  var s=0;
+  if(v.length>=8)s++;
+  if(/[A-Z]/.test(v))s++;
+  if(/[0-9]/.test(v))s++;
+  if(/[^A-Za-z0-9]/.test(v))s++;
+  var cls=['','s-weak','s-fair','s-good','s-good'];
+  var lbl=['','Weak','Fair','Strong','Very Strong'];
+  ['pb1','pb2','pb3','pb4'].forEach(function(id,i){
+    var el=document.getElementById(id);
+    el.className='pwd-bar';
+    if(i<s)el.classList.add(cls[s]);
+  });
+  document.getElementById('pslabel').textContent=v.length?lbl[s]:'';
+}
+
+function fv(el,type){
+  var v=el.value.trim(),msg='';
+  var err=document.getElementById('e-'+el.id);
+  if(type==='name'){if(!v)msg='Required.';else if(v.length<1)msg='At least 2 characters.';}
+  else if(type==='email'){if(!v)msg='Email required.';else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))msg='Invalid email address.';}
+  else if(type==='phone'){if(!v)msg='Phone required.';else if(!/^[+]?[0-9\s]{10,13}$/.test(v))msg='Enter a valid number.';}
+  else if(type==='pwd'){if(!v)msg='Password required.';else if(v.length<8)msg='Minimum 8 characters.';}
+  else if(type==='cpwd'){var p=document.getElementById('su-pwd').value;if(!v)msg='Please confirm.';else if(v!==p)msg='Passwords do not match.';}
+  if(err)err.textContent=msg;
+  el.classList.toggle('invalid',!!msg);
+  el.classList.toggle('valid',!msg&&!!v);
+  return !msg;
+}
+
+/* ── sign in ── */
+document.getElementById('signinForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var emailEl=document.getElementById('si-email');
+  var ok=[fv(emailEl,'email'),fv(document.getElementById('si-pwd'),'pwd')].every(Boolean);
+  if(ok){
+    var email=emailEl.value.trim(),name=nameFromEmail(email);
+    store(name,email,currentRole);
+    var dest=currentRole==='partner'?'dashboard_partner.html':'dashboard_customer.html';
+    toast('Welcome back, '+name.split(' ')[0]+'!');
+    setTimeout(function(){window.location.href=dest;});
+  }
+});
+
+/* ── sign up ── */
+document.getElementById('signupForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(!document.getElementById('termsChk').checked){toast('Please agree to the Terms of Service.');return;}
+  var fields=[
+    {id:'su-first',t:'name'},{id:'su-last',t:'name'},
+    {id:'su-email',t:'email'},{id:'su-phone',t:'phone'},
+    {id:'su-pwd',t:'pwd'},{id:'su-cpwd',t:'cpwd'}
+  ];
+  var ok=fields.map(function(f){return fv(document.getElementById(f.id),f.t);}).every(Boolean);
+  if(ok){
+    var first=document.getElementById('su-first').value.trim();
+    var last=document.getElementById('su-last').value.trim();
+    var name=(first+' '+last).trim();
+    var email=document.getElementById('su-email').value.trim();
+    store(name,email,'customer');
+    toast('Account created! Welcome, '+first+'. Redirecting to sign in…');
+    setTimeout(function(){window.location.href='login.html';});
+  }
+});
+</script>
+</body>
+</html>

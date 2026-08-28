@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — Stackly</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:        #0F766E;
+  --teal-bright: #14B8A6;
+  --blue:        #2563EB;
+  --blue-light:  #DBEAFE;
+  --red:         #EF4444;
+  --red-soft:    #FEE2E2;
+  --white:       #FFFFFF;
+  --bg:          #F8FAFC;
+  --ink:         #0F172A;
+  --ink-soft:    #64748B;
+  --teal-tint:   #E6F5F3;
+  --blue-tint:   #EFF4FF;
+  --border:      #E2E8F0;
+  --shadow-sm:   0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  --shadow-md:   0 8px 24px rgba(15,118,110,.10);
+  --shadow-lg:   0 24px 60px rgba(15,23,42,.12);
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+body{
+  margin:0; min-height:100svh; font-family:var(--font-body); color:var(--ink);
+  background:
+    radial-gradient(1100px 500px at 82% -8%, var(--blue-tint) 0%, transparent 60%),
+    radial-gradient(900px 500px at -5% 15%, var(--teal-tint) 0%, transparent 55%),
+    var(--white);
+  -webkit-font-smoothing:antialiased;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px;
+  overflow-x:hidden;
+}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+.notfound{max-width:560px; text-align:center;}
+@keyframes riseIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+.notfound-code, .notfound-title, .notfound-sub, .notfound-actions{
+  opacity:0;
+  animation:riseIn .7s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.notfound-code{animation-delay:.05s;}
+.notfound-title{animation-delay:.2s;}
+.notfound-sub{animation-delay:.32s;}
+.notfound-actions{animation-delay:.44s;}
+@media (prefers-reduced-motion: reduce){
+  .notfound-code, .notfound-title, .notfound-sub, .notfound-actions{animation:none; opacity:1; transform:none;}
+}
+.notfound-code{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.03em;
+  font-size:clamp(5rem, 16vw, 8.5rem); line-height:1; color:var(--ink);
+}
+.notfound-code em{font-style:italic; color:var(--teal);}
+.notfound-title{
+  font-family:var(--font-display); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(1.4rem, 3.4vw, 1.9rem); margin:14px 0 0; color:var(--ink);
+}
+.notfound-sub{
+  font-size:1.02rem; line-height:1.7; color:var(--ink-soft);
+  margin:16px auto 0; max-width:420px;
+}
+.notfound-actions{
+  display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:36px;
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  padding:15px 28px; border-radius:100px; font-weight:700; font-size:.96rem;
+  border:1.5px solid transparent; white-space:nowrap;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, background .3s, color .3s, border-color .3s;
+}
+.btn-primary{background:var(--teal); color:var(--white); box-shadow:0 10px 24px rgba(15,118,110,.28);}
+.btn-primary:hover{background:#0c5f58; transform:translateY(-3px); box-shadow:0 16px 30px rgba(15,118,110,.36);}
+.btn-outline{border-color:var(--border); color:var(--ink); background:var(--white);}
+.btn-outline:hover{border-color:var(--teal); color:var(--teal); transform:translateY(-3px); box-shadow:var(--shadow-md);}
+a:focus-visible, button:focus-visible{outline:2.5px solid var(--blue); outline-offset:3px; border-radius:6px;}
+
+@media (max-width:480px){
+  .notfound-actions{flex-direction:column; width:100%;}
+  .notfound-actions .btn{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div class="notfound">
+  <div class="notfound-code">4<em>0</em>4</div>
+  <h1 class="notfound-title">This page took a wrong turn.</h1>
+  <p class="notfound-sub">The page you're looking for doesn't exist or may have been moved. Let's get you back on track.</p>
+  <div class="notfound-actions">
+    <button type="button" class="btn btn-outline" onclick="stacklyGoBack()">Go Back</button>
+    <a href="index.html" class="btn btn-primary">Back to Home</a>
+  </div>
+</div>
+
+<script>
+function stacklyGoBack(){
+  var raw;
+  try{ raw = sessionStorage.getItem('stacklyNav'); }catch(e){ raw = null; }
+  if(raw){
+    try{
+      var data = JSON.parse(raw);
+      if(data && data.href && data.href.indexOf('404.html') === -1){
+        try{ sessionStorage.setItem('stacklyNavRestore', raw); }catch(e){}
+        window.location.href = data.href;
+        return;
+      }
+    }catch(e){}
+  }
+  if(document.referrer && document.referrer.indexOf('404.html') === -1){
+    window.location.href = document.referrer;
+    return;
+  }
+  history.back();
+}
+</script>
+
+</body>
+</html>
